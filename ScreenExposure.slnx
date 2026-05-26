@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="ScreenExposure.App/ScreenExposure.App.csproj" />
+  <Project Path="ScreenExposure.Core/ScreenExposure.Core.csproj" />
+  <Project Path="ScreenExposure.Tests/ScreenExposure.Tests.csproj" />
+</Solution>

@@ -1,0 +1,12 @@
+bin/
+obj/
+publish/
+dist/
+.vs/
+.vscode/
+*.user
+*.suo
+*.rsuser
+*.nupkg
+TestResults/
+*.log
