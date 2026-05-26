@@ -24,7 +24,22 @@ public sealed record GammaRamp(ushort[] Red, ushort[] Green, ushort[] Blue)
             blue[index] = ToUInt16(adjustment.ApplyChannel(input, Channel.Blue));
         }
 
+        NormalizeMonotonic(red);
+        NormalizeMonotonic(green);
+        NormalizeMonotonic(blue);
+
         return new GammaRamp(red, green, blue);
+    }
+
+    private static void NormalizeMonotonic(ushort[] values)
+    {
+        for (var index = 1; index < values.Length; index++)
+        {
+            if (values[index] < values[index - 1])
+            {
+                values[index] = values[index - 1];
+            }
+        }
     }
 
     private static ushort ToUInt16(double value)

@@ -34,4 +34,37 @@ public sealed class GammaRampTests
         Assert.Equal(ramp.Red[128], ramp.Green[128]);
         Assert.Equal(ramp.Red[128], ramp.Blue[128]);
     }
+
+    [Fact]
+    public void Generate_NormalizesDescendingPresetCurvesForWindowsDrivers()
+    {
+        var adjustment = ColorAdjustment.Default with
+        {
+            MasterCurve = new ToneCurve(new[]
+            {
+                new CurvePoint(0.0, 0.0),
+                new CurvePoint(0.5, 0.8),
+                new CurvePoint(1.0, 0.6)
+            })
+        };
+
+        var ramp = GammaRamp.Generate(adjustment);
+
+        Assert.True(IsMonotonic(ramp.Red));
+        Assert.True(IsMonotonic(ramp.Green));
+        Assert.True(IsMonotonic(ramp.Blue));
+    }
+
+    private static bool IsMonotonic(ushort[] values)
+    {
+        for (var index = 1; index < values.Length; index++)
+        {
+            if (values[index] < values[index - 1])
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
 }

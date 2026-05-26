@@ -84,53 +84,29 @@ public partial class MainWindow : Window
 
     private void OnResetClicked(object sender, RoutedEventArgs e)
     {
-        suppressUpdates = true;
-        ExposureSlider.Value = 0;
-        ContrastSlider.Value = 0;
-        GammaSlider.Value = 1;
-        ResetCurves();
-        CurveEditor.Curve = curves[activeChannel];
-        suppressUpdates = false;
-        RefreshValueLabels();
-        ApplyCurrentAdjustment();
+        ApplyPreset(AdjustmentPresets.Default);
     }
 
     private void OnOutdoorPresetClicked(object sender, RoutedEventArgs e)
     {
-        suppressUpdates = true;
-        ExposureSlider.Value = -1.1;
-        ContrastSlider.Value = -0.08;
-        GammaSlider.Value = 0.78;
-        curves[Channel.Master] = new ToneCurve(new[]
-        {
-            new CurvePoint(0.0, 0.0),
-            new CurvePoint(0.38, 0.26),
-            new CurvePoint(0.72, 0.53),
-            new CurvePoint(1.0, 0.78)
-        });
-        CurveEditor.Curve = curves[activeChannel];
-        suppressUpdates = false;
-        RefreshValueLabels();
-        ApplyCurrentAdjustment();
+        ApplyPreset(AdjustmentPresets.OutdoorDim);
     }
 
     private void OnNightPresetClicked(object sender, RoutedEventArgs e)
     {
+        ApplyPreset(AdjustmentPresets.Night);
+    }
+
+    private void ApplyPreset(AdjustmentPreset preset)
+    {
         suppressUpdates = true;
-        ExposureSlider.Value = -1.5;
-        ContrastSlider.Value = -0.15;
-        GammaSlider.Value = 0.7;
-        curves[Channel.Master] = new ToneCurve(new[]
-        {
-            new CurvePoint(0.0, 0.0),
-            new CurvePoint(0.5, 0.32),
-            new CurvePoint(1.0, 0.64)
-        });
-        curves[Channel.Blue] = new ToneCurve(new[]
-        {
-            new CurvePoint(0.0, 0.0),
-            new CurvePoint(1.0, 0.82)
-        });
+        ExposureSlider.Value = preset.ExposureStops;
+        ContrastSlider.Value = preset.Contrast;
+        GammaSlider.Value = preset.Gamma;
+        curves[Channel.Master] = preset.MasterCurve;
+        curves[Channel.Red] = preset.RedCurve;
+        curves[Channel.Green] = preset.GreenCurve;
+        curves[Channel.Blue] = preset.BlueCurve;
         CurveEditor.Curve = curves[activeChannel];
         suppressUpdates = false;
         RefreshValueLabels();
@@ -219,14 +195,6 @@ public partial class MainWindow : Window
         }
 
         return BlueChannelButton.IsChecked == true ? Channel.Blue : Channel.Master;
-    }
-
-    private void ResetCurves()
-    {
-        curves[Channel.Master] = ToneCurve.Linear;
-        curves[Channel.Red] = ToneCurve.Linear;
-        curves[Channel.Green] = ToneCurve.Linear;
-        curves[Channel.Blue] = ToneCurve.Linear;
     }
 
     private void RefreshValueLabels()
