@@ -88,7 +88,7 @@ internal sealed class DisplayGammaService : IDisposable
         {
             if (!NativeMethods.SetDeviceGammaRamp(hdc, ref ramp))
             {
-                throw new Win32Exception("SetDeviceGammaRamp failed. HDR, driver color controls, or protected fullscreen output may block it.");
+                throw new Win32Exception("SetDeviceGammaRamp 写入失败。当前曲线可能把白场压得过低，或被驱动色彩控制、独占全屏/受保护输出拦截。");
             }
         }
 

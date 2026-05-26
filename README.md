@@ -12,6 +12,7 @@ Windows desktop tool for game-oriented screen tone adjustment. It provides a Pho
 - ICC export based on the system sRGB profile with a generated `vcgt` tag
 - ICC / ICM import and display association
 - Display selection for ICC association
+- Driver-safe white point clamping for realtime gamma ramp output
 
 ## 中文文档
 
@@ -44,6 +45,7 @@ The distributable files are written to `dist/`:
 ## Notes
 
 - Disable HDR before testing. HDR, driver color controls, protected output, and exclusive fullscreen games may ignore or override the gamma ramp.
+- Some display drivers reject gamma ramps with an extremely low white point. Realtime output keeps a conservative white-point floor to avoid common `SetDeviceGammaRamp` failures.
 - ICC profiles are not realtime post-processing filters. The app applies realtime changes through the gamma ramp, then writes the same ramp into ICC `vcgt` when saving.
 - Saving ICC profiles writes to the Windows color profile directory and may require user permissions depending on system policy.
 - If the screen looks wrong, click **恢复** or close the app. The app keeps the original gamma ramp in memory and attempts to restore it on exit.

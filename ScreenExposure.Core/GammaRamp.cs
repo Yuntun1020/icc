@@ -3,6 +3,7 @@ namespace ScreenExposure.Core;
 public sealed record GammaRamp(ushort[] Red, ushort[] Green, ushort[] Blue)
 {
     public const int DefaultEntryCount = 256;
+    public const ushort WindowsDriverSafeWhitePoint = 32768;
 
     public static GammaRamp Generate(ColorAdjustment adjustment, int entryCount = DefaultEntryCount)
     {
@@ -24,11 +25,18 @@ public sealed record GammaRamp(ushort[] Red, ushort[] Green, ushort[] Blue)
             blue[index] = ToUInt16(adjustment.ApplyChannel(input, Channel.Blue));
         }
 
-        NormalizeMonotonic(red);
-        NormalizeMonotonic(green);
-        NormalizeMonotonic(blue);
+        NormalizeForWindowsDrivers(red);
+        NormalizeForWindowsDrivers(green);
+        NormalizeForWindowsDrivers(blue);
 
         return new GammaRamp(red, green, blue);
+    }
+
+    private static void NormalizeForWindowsDrivers(ushort[] values)
+    {
+        NormalizeMonotonic(values);
+        PreserveDriverSafeWhitePoint(values);
+        NormalizeMonotonic(values);
     }
 
     private static void NormalizeMonotonic(ushort[] values)
@@ -39,6 +47,29 @@ public sealed record GammaRamp(ushort[] Red, ushort[] Green, ushort[] Blue)
             {
                 values[index] = values[index - 1];
             }
+        }
+    }
+
+    private static void PreserveDriverSafeWhitePoint(ushort[] values)
+    {
+        var currentWhitePoint = values[^1];
+        if (currentWhitePoint >= WindowsDriverSafeWhitePoint)
+        {
+            return;
+        }
+
+        if (currentWhitePoint == 0)
+        {
+            values[^1] = WindowsDriverSafeWhitePoint;
+            return;
+        }
+
+        var scale = WindowsDriverSafeWhitePoint / (double)currentWhitePoint;
+        for (var index = 0; index < values.Length; index++)
+        {
+            values[index] = (ushort)Math.Min(
+                ushort.MaxValue,
+                Math.Round(values[index] * scale, MidpointRounding.AwayFromZero));
         }
     }
 

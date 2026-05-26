@@ -15,6 +15,17 @@ public sealed class AdjustmentPresetTests
         Assert.Equal(GammaRamp.DefaultEntryCount, ramp.Blue.Length);
     }
 
+    [Theory]
+    [MemberData(nameof(Presets))]
+    public void Preset_KeepsWhitePointInWindowsDriverSafeRange(AdjustmentPreset preset)
+    {
+        var ramp = GammaRamp.Generate(preset.ToAdjustment());
+
+        Assert.True(ramp.Red[^1] >= GammaRamp.WindowsDriverSafeWhitePoint);
+        Assert.True(ramp.Green[^1] >= GammaRamp.WindowsDriverSafeWhitePoint);
+        Assert.True(ramp.Blue[^1] >= GammaRamp.WindowsDriverSafeWhitePoint);
+    }
+
     [Fact]
     public void OutdoorPreset_ResetsAllPerChannelCurvesToLinear()
     {

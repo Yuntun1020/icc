@@ -265,6 +265,8 @@
                                 <TextBlock x:Name="ExposureValueText" Grid.Column="1" Width="56" TextAlignment="Right" FontWeight="SemiBold" />
                             </Grid>
                             <Slider x:Name="ExposureSlider" Minimum="-3" Maximum="1" Value="0" TickFrequency="0.1" ValueChanged="OnAdjustmentChanged" />
+                            <TextBlock Style="{StaticResource HintText}"
+                                       Text="曝光按 Stops 改变整体光量，不是普通亮度偏移；压暗高光建议配合曲线右侧控制点。" />
 
                             <Grid>
                                 <Grid.ColumnDefinitions>
@@ -364,7 +366,7 @@
                 Margin="0,16,0,0">
             <DockPanel>
                 <TextBlock Text="提示" Foreground="{StaticResource WarningBrush}" FontWeight="SemiBold" Margin="0,0,10,0" />
-                <TextBlock Text="建议先关闭 HDR 再测试。应用后如果画面异常，点“恢复”或关闭程序会尝试恢复原始 Gamma Ramp。"
+                <TextBlock Text="部分驱动会拒绝过低白场或独占全屏输出；应用后如果画面异常，点“恢复”或关闭程序会尝试恢复原始 Gamma Ramp。"
                            Foreground="{StaticResource MutedTextBrush}" />
             </DockPanel>
         </Border>
