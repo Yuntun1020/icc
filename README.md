@@ -12,6 +12,10 @@ Windows desktop tool for game-oriented screen tone adjustment. It provides a Pho
 - ICC export based on the system sRGB profile with a generated `vcgt` tag
 - Display selection for ICC association
 
+## 中文文档
+
+中文使用说明见 [docs/zh-CN.md](docs/zh-CN.md)。
+
 ## Run
 
 ```powershell
