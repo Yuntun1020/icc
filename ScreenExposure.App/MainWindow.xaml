@@ -313,11 +313,24 @@
                         <StackPanel>
                             <TextBlock Text="ICC 同步" Style="{StaticResource SectionTitleText}" />
                             <TextBlock Style="{StaticResource HintText}"
-                                       Text="生成基于系统 sRGB 的 ICC，并写入当前曲线的 vcgt 校准表。部分游戏、HDR 或独占全屏可能不会读取 ICC。" />
-                            <Button Content="保存并设为当前显示器 ICC"
-                                    Style="{StaticResource ToolButton}"
-                                    Click="OnSaveIccClicked"
-                                    Margin="0,12,0,0" />
+                                       Text="可保存当前曲线为 ICC，也可导入外部 .icc/.icm 滤镜文件并关联到当前显示器。" />
+                            <Grid Margin="0,12,0,0">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="8" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <Button Grid.Row="0"
+                                        Content="保存当前曲线为 ICC"
+                                        Style="{StaticResource ToolButton}"
+                                        Click="OnSaveIccClicked"
+                                        Margin="0" />
+                                <Button Grid.Row="2"
+                                        Content="导入 ICC 滤镜文件"
+                                        Style="{StaticResource ToolButton}"
+                                        Click="OnImportIccClicked"
+                                        Margin="0" />
+                            </Grid>
                         </StackPanel>
                     </Border>
 

@@ -11,6 +11,7 @@ Screen Exposure 是一个 Windows 屏幕调色工具，适合在游戏画面过�
 - 实时写入 Windows Gamma Ramp
 - 恢复启动前的原始屏幕曲线
 - 生成并关联带 `vcgt` 的 ICC 配置文件
+- 导入外部 `.icc` / `.icm` 滤镜文件并关联到显示器
 - 打包为 Windows x64 单文件 exe
 
 ## 下载与运行
@@ -45,12 +46,14 @@ https://github.com/Yuntun1020/icc/releases/tag/v0.1.0
 
 ## ICC 同步
 
-点击 **保存并设为当前显示器 ICC** 后，程序会：
+点击 **保存当前曲线为 ICC** 后，程序会：
 
 1. 读取系统自带的 sRGB ICC 配置文件作为基础。
 2. 根据当前曝光、Gamma、对比度和曲线生成 256 点 RGB Gamma Ramp。
 3. 把这条曲线写入 ICC 的 `vcgt` 标签。
 4. 调用 Windows 色彩管理 API 安装并关联到当前显示器。
+
+点击 **导入 ICC 滤镜文件** 后，可以选择外部 `.icc` 或 `.icm` 文件。程序会先校验文件扩展名和 ICC `acsp` 签名，再复制到 Windows 色彩配置目录并关联到当前显示器。
 
 注意：ICC 不是实时游戏滤镜。程序实时生效依靠 Windows Gamma Ramp；ICC 保存更适合把当前校准曲线持久化到系统色彩配置中。
 

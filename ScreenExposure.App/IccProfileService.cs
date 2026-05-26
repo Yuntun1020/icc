@@ -59,11 +59,31 @@ internal static class IccProfileService
                 deviceName,
                 NativeMethods.ColorProfileTypeIcc,
                 NativeMethods.ColorProfileSubtypeRgbDisplay,
-                0,
                 profileNameLength,
                 profilePath))
         {
             throw new Win32Exception($"WcsSetDefaultColorProfile failed for {deviceName}.");
         }
+    }
+
+    public static string ImportAndAssociate(string sourceProfilePath, string deviceName)
+    {
+        if (!File.Exists(sourceProfilePath))
+        {
+            throw new FileNotFoundException("ICC profile file does not exist.", sourceProfilePath);
+        }
+
+        var profileBytes = File.ReadAllBytes(sourceProfilePath);
+        var candidate = IccProfileImport.ValidateImportCandidate(sourceProfilePath, profileBytes);
+        Directory.CreateDirectory(ColorProfileDirectory);
+
+        var baseName = Path.GetFileNameWithoutExtension(candidate.FileName);
+        var safeFileName = IccProfileImport.SanitizeFileName(
+            $"ScreenExposure-Imported-{baseName}-{DateTime.Now:yyyyMMdd-HHmmss}{candidate.Extension}");
+        var outputPath = Path.Combine(ColorProfileDirectory, safeFileName);
+
+        File.Copy(sourceProfilePath, outputPath, overwrite: true);
+        InstallAndAssociate(outputPath, deviceName);
+        return outputPath;
     }
 }

@@ -37,7 +37,6 @@ internal static partial class NativeMethods
         string? deviceName,
         uint profileType,
         uint profileSubtype,
-        uint profileId,
         uint profileNameLength,
         string profileName);
 }

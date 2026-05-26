@@ -2,6 +2,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Windows;
 using ScreenExposure.Core;
+using WpfOpenFileDialog = Microsoft.Win32.OpenFileDialog;
 
 namespace ScreenExposure.App;
 
@@ -154,6 +155,33 @@ public partial class MainWindow : Window
             var ramp = GammaRamp.Generate(CreateAdjustment());
             var profilePath = IccProfileService.ExportVcgtProfile(ramp, $"ScreenExposure-{DateTime.Now:yyyyMMdd-HHmmss}");
             IccProfileService.InstallAndAssociate(profilePath, display.DeviceName);
+        });
+    }
+
+    private void OnImportIccClicked(object sender, RoutedEventArgs e)
+    {
+        if (DisplayComboBox.SelectedItem is not DisplayDevice display)
+        {
+            SetStatus("没有可用显示器", true);
+            return;
+        }
+
+        var dialog = new WpfOpenFileDialog
+        {
+            Title = "选择 ICC 滤镜文件",
+            Filter = "ICC profiles (*.icc;*.icm)|*.icc;*.icm",
+            CheckFileExists = true,
+            Multiselect = false
+        };
+
+        if (dialog.ShowDialog(this) != true)
+        {
+            return;
+        }
+
+        TryRun("ICC 滤镜已导入并关联到当前显示器", () =>
+        {
+            IccProfileService.ImportAndAssociate(dialog.FileName, display.DeviceName);
         });
     }
 

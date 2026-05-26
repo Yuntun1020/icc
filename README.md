@@ -10,6 +10,7 @@ Windows desktop tool for game-oriented screen tone adjustment. It provides a Pho
 - Restore original gamma ramp on demand or process exit
 - Outdoor dimming, night, and default presets
 - ICC export based on the system sRGB profile with a generated `vcgt` tag
+- ICC / ICM import and display association
 - Display selection for ICC association
 
 ## 中文文档
