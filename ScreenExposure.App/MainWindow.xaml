@@ -3,31 +3,150 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:ScreenExposure.App"
         Title="Screen Exposure"
-        Width="1040"
-        Height="680"
-        MinWidth="920"
-        MinHeight="600"
-        Background="#101317"
-        Foreground="#F1F5F4">
+        Width="1120"
+        Height="720"
+        MinWidth="980"
+        MinHeight="640"
+        Background="#0D1116"
+        Foreground="#EEF5F2"
+        FontFamily="Segoe UI">
     <Window.Resources>
+        <SolidColorBrush x:Key="AppBackgroundBrush" Color="#0D1116" />
+        <SolidColorBrush x:Key="PanelBrush" Color="#151B21" />
+        <SolidColorBrush x:Key="PanelAltBrush" Color="#11171D" />
+        <SolidColorBrush x:Key="PanelBorderBrush" Color="#2A3540" />
+        <SolidColorBrush x:Key="PrimaryBrush" Color="#5DD7B2" />
+        <SolidColorBrush x:Key="PrimaryTextBrush" Color="#07110E" />
+        <SolidColorBrush x:Key="TextBrush" Color="#EEF5F2" />
+        <SolidColorBrush x:Key="MutedTextBrush" Color="#A9B7B2" />
+        <SolidColorBrush x:Key="SubtleTextBrush" Color="#778681" />
+        <SolidColorBrush x:Key="ButtonBrush" Color="#24303A" />
+        <SolidColorBrush x:Key="ButtonHoverBrush" Color="#2D3B47" />
+        <SolidColorBrush x:Key="DangerBrush" Color="#F87171" />
+        <SolidColorBrush x:Key="DangerTextBrush" Color="#190707" />
+        <SolidColorBrush x:Key="WarningBrush" Color="#F4B860" />
+
         <Style TargetType="TextBlock">
-            <Setter Property="Foreground" Value="#DCE4E1" />
+            <Setter Property="Foreground" Value="{StaticResource TextBrush}" />
+            <Setter Property="TextOptions.TextFormattingMode" Value="Display" />
         </Style>
-        <Style TargetType="Button">
-            <Setter Property="MinHeight" Value="36" />
-            <Setter Property="Padding" Value="14,7" />
+
+        <Style x:Key="SectionTitleText" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="15" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Foreground" Value="{StaticResource TextBrush}" />
+            <Setter Property="Margin" Value="0,0,0,12" />
+        </Style>
+
+        <Style x:Key="HintText" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{StaticResource MutedTextBrush}" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="LineHeight" Value="18" />
+            <Setter Property="TextWrapping" Value="Wrap" />
+        </Style>
+
+        <Style x:Key="PanelBorder" TargetType="Border">
+            <Setter Property="Background" Value="{StaticResource PanelBrush}" />
+            <Setter Property="BorderBrush" Value="{StaticResource PanelBorderBrush}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="CornerRadius" Value="6" />
+            <Setter Property="Padding" Value="18" />
+        </Style>
+
+        <Style x:Key="ToolButton" TargetType="Button">
+            <Setter Property="MinHeight" Value="38" />
+            <Setter Property="Padding" Value="16,8" />
             <Setter Property="Margin" Value="0,0,8,0" />
-            <Setter Property="Foreground" Value="#F8FAF9" />
-            <Setter Property="Background" Value="#26313A" />
-            <Setter Property="BorderBrush" Value="#3D4A53" />
+            <Setter Property="Foreground" Value="{StaticResource TextBrush}" />
+            <Setter Property="Background" Value="{StaticResource ButtonBrush}" />
+            <Setter Property="BorderBrush" Value="#3A4854" />
+            <Setter Property="BorderThickness" Value="1" />
             <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="Root"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="5"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Root" Property="Background" Value="{StaticResource ButtonHoverBrush}" />
+                            </Trigger>
+                            <Trigger Property="IsKeyboardFocused" Value="True">
+                                <Setter TargetName="Root" Property="BorderBrush" Value="{StaticResource PrimaryBrush}" />
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="Root" Property="Opacity" Value="0.55" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
         </Style>
+
+        <Style x:Key="PrimaryButton" TargetType="Button" BasedOn="{StaticResource ToolButton}">
+            <Setter Property="Foreground" Value="{StaticResource PrimaryTextBrush}" />
+            <Setter Property="Background" Value="{StaticResource PrimaryBrush}" />
+            <Setter Property="BorderBrush" Value="{StaticResource PrimaryBrush}" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+        </Style>
+
+        <Style x:Key="DangerButton" TargetType="Button" BasedOn="{StaticResource ToolButton}">
+            <Setter Property="Foreground" Value="{StaticResource DangerTextBrush}" />
+            <Setter Property="Background" Value="{StaticResource DangerBrush}" />
+            <Setter Property="BorderBrush" Value="{StaticResource DangerBrush}" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+        </Style>
+
         <Style TargetType="Slider">
+            <Setter Property="Margin" Value="0,8,0,16" />
+            <Setter Property="MinHeight" Value="24" />
+        </Style>
+
+        <Style TargetType="ComboBox">
+            <Setter Property="MinHeight" Value="36" />
             <Setter Property="Margin" Value="0,6,0,14" />
         </Style>
-        <Style TargetType="ComboBox">
-            <Setter Property="MinHeight" Value="34" />
-            <Setter Property="Margin" Value="0,6,0,14" />
+
+        <Style TargetType="RadioButton">
+            <Setter Property="Foreground" Value="{StaticResource MutedTextBrush}" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="MinWidth" Value="48" />
+            <Setter Property="MinHeight" Value="32" />
+            <Setter Property="Margin" Value="0,0,8,0" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="RadioButton">
+                        <Border x:Name="Root"
+                                Background="#192129"
+                                BorderBrush="#2D3A44"
+                                BorderThickness="1"
+                                CornerRadius="5"
+                                Padding="12,6">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Root" Property="BorderBrush" Value="#4E6170" />
+                            </Trigger>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="Root" Property="Background" Value="#5DD7B2" />
+                                <Setter TargetName="Root" Property="BorderBrush" Value="#5DD7B2" />
+                                <Setter Property="Foreground" Value="#07110E" />
+                                <Setter Property="FontWeight" Value="SemiBold" />
+                            </Trigger>
+                            <Trigger Property="IsKeyboardFocused" Value="True">
+                                <Setter TargetName="Root" Property="BorderBrush" Value="{StaticResource WarningBrush}" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
         </Style>
     </Window.Resources>
 
@@ -38,26 +157,51 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <DockPanel Grid.Row="0" Margin="0,0,0,18">
-            <StackPanel DockPanel.Dock="Left">
-                <TextBlock Text="Screen Exposure" FontSize="24" FontWeight="SemiBold" Foreground="#FFFFFF" />
-                <TextBlock Text="曲线、通道和曝光调整会实时写入 Windows Gamma Ramp；保存 ICC 会生成带 vcgt 曲线的配置文件。"
-                           Margin="0,6,0,0"
-                           Foreground="#9EAAA6" />
-            </StackPanel>
-            <Border DockPanel.Dock="Right" Background="#1A2026" BorderBrush="#2E3942" BorderThickness="1" Padding="12,8">
-                <TextBlock x:Name="StatusText" Text="未应用" Foreground="#9EAAA6" />
-            </Border>
-        </DockPanel>
+        <Border Grid.Row="0"
+                Background="{StaticResource PanelAltBrush}"
+                BorderBrush="{StaticResource PanelBorderBrush}"
+                BorderThickness="1"
+                CornerRadius="6"
+                Padding="16"
+                Margin="0,0,0,16">
+            <DockPanel LastChildFill="True">
+                <StackPanel DockPanel.Dock="Left" Orientation="Horizontal" VerticalAlignment="Center">
+                    <Border Width="36" Height="36" CornerRadius="6" Background="{StaticResource PrimaryBrush}" Margin="0,0,12,0">
+                        <TextBlock Text="SE" Foreground="{StaticResource PrimaryTextBrush}" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Border>
+                    <StackPanel>
+                        <TextBlock Text="Screen Exposure" FontSize="22" FontWeight="SemiBold" Foreground="#FFFFFF" />
+                        <TextBlock Text="游戏画面曲线、通道和 ICC 校准工具"
+                                   Foreground="{StaticResource MutedTextBrush}"
+                                   Margin="0,4,0,0" />
+                    </StackPanel>
+                </StackPanel>
+
+                <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center">
+                    <Border Background="#192129" BorderBrush="#2D3A44" BorderThickness="1" CornerRadius="5" Padding="10,7" Margin="0,0,8,0">
+                        <StackPanel>
+                            <TextBlock Text="实时输出" FontSize="11" Foreground="{StaticResource SubtleTextBrush}" />
+                            <TextBlock Text="Gamma Ramp" FontWeight="SemiBold" Foreground="{StaticResource TextBrush}" />
+                        </StackPanel>
+                    </Border>
+                    <Border Background="#192129" BorderBrush="#2D3A44" BorderThickness="1" CornerRadius="5" Padding="10,7">
+                        <StackPanel>
+                            <TextBlock Text="当前状态" FontSize="11" Foreground="{StaticResource SubtleTextBrush}" />
+                            <TextBlock x:Name="StatusText" Text="未应用" FontWeight="SemiBold" Foreground="{StaticResource MutedTextBrush}" />
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+            </DockPanel>
+        </Border>
 
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="2*" />
-                <ColumnDefinition Width="20" />
-                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="2.1*" MinWidth="560" />
+                <ColumnDefinition Width="18" />
+                <ColumnDefinition Width="1*" MinWidth="330" />
             </Grid.ColumnDefinitions>
 
-            <Border Grid.Column="0" Background="#151A1F" BorderBrush="#2B343C" BorderThickness="1" Padding="18">
+            <Border Grid.Column="0" Style="{StaticResource PanelBorder}">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
@@ -66,79 +210,150 @@
                     </Grid.RowDefinitions>
 
                     <DockPanel Grid.Row="0" Margin="0,0,0,14">
-                        <TextBlock DockPanel.Dock="Left" Text="曲线" FontSize="18" FontWeight="SemiBold" Foreground="#FFFFFF" />
-                        <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
-                            <RadioButton x:Name="MasterChannelButton" Content="RGB" IsChecked="True" Margin="0,0,12,0" Checked="OnChannelChanged" />
-                            <RadioButton x:Name="RedChannelButton" Content="R" Margin="0,0,12,0" Checked="OnChannelChanged" />
-                            <RadioButton x:Name="GreenChannelButton" Content="G" Margin="0,0,12,0" Checked="OnChannelChanged" />
-                            <RadioButton x:Name="BlueChannelButton" Content="B" Checked="OnChannelChanged" />
+                        <StackPanel DockPanel.Dock="Left">
+                            <TextBlock Text="曲线编辑器" FontSize="18" FontWeight="SemiBold" Foreground="#FFFFFF" />
+                            <TextBlock Text="拖动曲线压暗高光或单独校正 RGB 通道"
+                                       Margin="0,4,0,0"
+                                       Foreground="{StaticResource MutedTextBrush}" />
+                        </StackPanel>
+                        <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center">
+                            <RadioButton x:Name="MasterChannelButton" Content="RGB" IsChecked="True" Checked="OnChannelChanged" />
+                            <RadioButton x:Name="RedChannelButton" Content="R" Checked="OnChannelChanged" />
+                            <RadioButton x:Name="GreenChannelButton" Content="G" Checked="OnChannelChanged" />
+                            <RadioButton x:Name="BlueChannelButton" Content="B" Margin="0" Checked="OnChannelChanged" />
                         </StackPanel>
                     </DockPanel>
 
-                    <local:CurveEditor x:Name="CurveEditor"
-                                       Grid.Row="1"
-                                       CurveChanged="OnCurveChanged" />
+                    <Border Grid.Row="1"
+                            Background="#10161C"
+                            BorderBrush="#27333D"
+                            BorderThickness="1"
+                            CornerRadius="5"
+                            Padding="12">
+                        <local:CurveEditor x:Name="CurveEditor"
+                                           CurveChanged="OnCurveChanged" />
+                    </Border>
 
-                    <TextBlock Grid.Row="2"
-                               Text="点击添加控制点，拖动调整曲线；选中点后按 Delete 删除。端点只允许上下移动。"
-                               Margin="0,12,0,0"
-                               Foreground="#8F9A96" />
+                    <Grid Grid.Row="2" Margin="0,12,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Style="{StaticResource HintText}"
+                                   Text="点击添加控制点，拖动调整曲线；选中点后按 Delete 删除。端点只允许上下移动。" />
+                        <TextBlock Grid.Column="1"
+                                   Text="0 → 255"
+                                   Foreground="{StaticResource SubtleTextBrush}"
+                                   Margin="18,0,0,0"
+                                   VerticalAlignment="Center" />
+                    </Grid>
                 </Grid>
             </Border>
 
-            <Border Grid.Column="2" Background="#151A1F" BorderBrush="#2B343C" BorderThickness="1" Padding="18">
-                <ScrollViewer VerticalScrollBarVisibility="Auto">
-                    <StackPanel>
-                        <TextBlock Text="画面调整" FontSize="18" FontWeight="SemiBold" Foreground="#FFFFFF" />
+            <ScrollViewer Grid.Column="2" VerticalScrollBarVisibility="Auto">
+                <StackPanel>
+                    <Border Style="{StaticResource PanelBorder}" Margin="0,0,0,12">
+                        <StackPanel>
+                            <TextBlock Text="基础调整" Style="{StaticResource SectionTitleText}" />
 
-                        <TextBlock Text="曝光 Stops" Margin="0,18,0,0" />
-                        <DockPanel>
-                            <TextBlock x:Name="ExposureValueText" DockPanel.Dock="Right" Width="48" TextAlignment="Right" Foreground="#FFFFFF" />
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="曝光 Stops" Foreground="{StaticResource MutedTextBrush}" />
+                                <TextBlock x:Name="ExposureValueText" Grid.Column="1" Width="56" TextAlignment="Right" FontWeight="SemiBold" />
+                            </Grid>
                             <Slider x:Name="ExposureSlider" Minimum="-3" Maximum="1" Value="0" TickFrequency="0.1" ValueChanged="OnAdjustmentChanged" />
-                        </DockPanel>
 
-                        <TextBlock Text="对比度" />
-                        <DockPanel>
-                            <TextBlock x:Name="ContrastValueText" DockPanel.Dock="Right" Width="48" TextAlignment="Right" Foreground="#FFFFFF" />
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="对比度" Foreground="{StaticResource MutedTextBrush}" />
+                                <TextBlock x:Name="ContrastValueText" Grid.Column="1" Width="56" TextAlignment="Right" FontWeight="SemiBold" />
+                            </Grid>
                             <Slider x:Name="ContrastSlider" Minimum="-0.5" Maximum="0.8" Value="0" TickFrequency="0.05" ValueChanged="OnAdjustmentChanged" />
-                        </DockPanel>
 
-                        <TextBlock Text="Gamma" />
-                        <DockPanel>
-                            <TextBlock x:Name="GammaValueText" DockPanel.Dock="Right" Width="48" TextAlignment="Right" Foreground="#FFFFFF" />
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Gamma" Foreground="{StaticResource MutedTextBrush}" />
+                                <TextBlock x:Name="GammaValueText" Grid.Column="1" Width="56" TextAlignment="Right" FontWeight="SemiBold" />
+                            </Grid>
                             <Slider x:Name="GammaSlider" Minimum="0.35" Maximum="1.8" Value="1" TickFrequency="0.05" ValueChanged="OnAdjustmentChanged" />
-                        </DockPanel>
-
-                        <TextBlock Text="显示器" Margin="0,8,0,0" />
-                        <ComboBox x:Name="DisplayComboBox" DisplayMemberPath="FriendlyName" />
-
-                        <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
-                            <Button Content="应用" Click="OnApplyClicked" />
-                            <Button Content="恢复" Click="OnRestoreClicked" />
-                            <Button Content="重置" Click="OnResetClicked" />
                         </StackPanel>
+                    </Border>
 
-                        <TextBlock Text="ICC 同步" FontSize="18" FontWeight="SemiBold" Foreground="#FFFFFF" Margin="0,26,0,0" />
-                        <TextBlock Text="生成基于系统 sRGB 的 ICC，并写入当前曲线的 vcgt 校准表。某些游戏、HDR 或独占全屏可能不会读取 ICC。"
-                                   Margin="0,8,0,10"
-                                   TextWrapping="Wrap"
-                                   Foreground="#9EAAA6" />
-                        <Button Content="保存并设为当前显示器 ICC" Click="OnSaveIccClicked" Margin="0,0,0,0" />
+                    <Border Style="{StaticResource PanelBorder}" Margin="0,0,0,12">
+                        <StackPanel>
+                            <TextBlock Text="显示与应用" Style="{StaticResource SectionTitleText}" />
+                            <TextBlock Text="显示器" Foreground="{StaticResource MutedTextBrush}" />
+                            <ComboBox x:Name="DisplayComboBox" DisplayMemberPath="FriendlyName" />
 
-                        <TextBlock Text="预设" FontSize="18" FontWeight="SemiBold" Foreground="#FFFFFF" Margin="0,26,0,8" />
-                        <WrapPanel>
-                            <Button Content="室外压暗" Click="OnOutdoorPresetClicked" />
-                            <Button Content="夜间" Click="OnNightPresetClicked" />
-                            <Button Content="默认" Click="OnDefaultPresetClicked" />
-                        </WrapPanel>
-                    </StackPanel>
-                </ScrollViewer>
-            </Border>
+                            <Grid Margin="0,2,0,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="8" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="8" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Button Grid.Column="0" Content="应用" Style="{StaticResource PrimaryButton}" Click="OnApplyClicked" Margin="0" />
+                                <Button Grid.Column="2" Content="恢复" Style="{StaticResource DangerButton}" Click="OnRestoreClicked" Margin="0" />
+                                <Button Grid.Column="4" Content="重置" Style="{StaticResource ToolButton}" Click="OnResetClicked" Margin="0" />
+                            </Grid>
+                        </StackPanel>
+                    </Border>
+
+                    <Border Style="{StaticResource PanelBorder}" Margin="0,0,0,12">
+                        <StackPanel>
+                            <TextBlock Text="ICC 同步" Style="{StaticResource SectionTitleText}" />
+                            <TextBlock Style="{StaticResource HintText}"
+                                       Text="生成基于系统 sRGB 的 ICC，并写入当前曲线的 vcgt 校准表。部分游戏、HDR 或独占全屏可能不会读取 ICC。" />
+                            <Button Content="保存并设为当前显示器 ICC"
+                                    Style="{StaticResource ToolButton}"
+                                    Click="OnSaveIccClicked"
+                                    Margin="0,12,0,0" />
+                        </StackPanel>
+                    </Border>
+
+                    <Border Style="{StaticResource PanelBorder}">
+                        <StackPanel>
+                            <TextBlock Text="预设" Style="{StaticResource SectionTitleText}" />
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="8" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="8" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Button Grid.Column="0" Content="室外压暗" Style="{StaticResource ToolButton}" Click="OnOutdoorPresetClicked" Margin="0" />
+                                <Button Grid.Column="2" Content="夜间" Style="{StaticResource ToolButton}" Click="OnNightPresetClicked" Margin="0" />
+                                <Button Grid.Column="4" Content="默认" Style="{StaticResource ToolButton}" Click="OnDefaultPresetClicked" Margin="0" />
+                            </Grid>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+            </ScrollViewer>
         </Grid>
 
-        <TextBlock Grid.Row="2"
-                   Margin="0,16,0,0"
-                   Text="建议先关闭 HDR 再测试。应用后如果画面异常，点“恢复”或关闭程序会尝试恢复原始 Gamma Ramp。"
-                   Foreground="#8F9A96" />
+        <Border Grid.Row="2"
+                Background="{StaticResource PanelAltBrush}"
+                BorderBrush="{StaticResource PanelBorderBrush}"
+                BorderThickness="1"
+                CornerRadius="6"
+                Padding="12"
+                Margin="0,16,0,0">
+            <DockPanel>
+                <TextBlock Text="提示" Foreground="{StaticResource WarningBrush}" FontWeight="SemiBold" Margin="0,0,10,0" />
+                <TextBlock Text="建议先关闭 HDR 再测试。应用后如果画面异常，点“恢复”或关闭程序会尝试恢复原始 Gamma Ramp。"
+                           Foreground="{StaticResource MutedTextBrush}" />
+            </DockPanel>
+        </Border>
     </Grid>
 </Window>
